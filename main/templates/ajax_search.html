@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<input id="search" type="text" />
+<p id="results"></p>
+
+<script type="text/javascript">
+$('#search').keyup( function() {
+	$('#results').text('');
+	$.ajax({
+		// send the request as a GET request
+		type: 'GET',
+		// the URL to send to GET request to
+		url: '/json_response/',
+		// the data to send to the URL
+		data: {
+			search: $('#search').val(),
+		},
+		// the function to perform if there is a error
+		error: function() {
+			$('#results').html('<p>An error has occurred</p>');
+		},
+		// what to do with the data that comes back from the server
+		success: function(data) {
+			for (var i = 0; i < data.length; i++) {
+		      	$('#results').append(data[i] + "</br>");
+			}
+		}
+	});
+});
+</script>
+{% endblock %}

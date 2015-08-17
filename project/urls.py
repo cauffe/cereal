@@ -22,6 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/$', 'main.views.home'),
+    url(r'^json_response/$', 'main.views.json_response'),
+
+    url(r'^ajax_search/$', 'main.views.ajax_search'),
+
     url(r'^cereal_list_view/$', 'main.views.cereal_list_view'),
     url(r'^cereal_list_template/$', 'main.views.cereal_list_template'),
     url(r'^cereal_list_template2/$', 'main.views.cereal_list_template2'),

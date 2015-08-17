@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import RequestContext
 
 from main.models import Manufacturer, Cereal
@@ -9,8 +9,10 @@ from django.contrib.auth.models import User
 
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
-
+import json
 # Create your views here.
+
+
 
 def home(request):
 
@@ -59,6 +61,31 @@ def cereal_list_template(request):
 	
 	return render(request, 'cereal_list.html', context)
 
+def json_response(request):
+
+	search_string = request.GET.get('search', None)
+
+	if search_string != None:
+		cereal_search = Cereal.objects.filter(name__icontains=search_string)
+	else:
+		cereal_search = Cereal.objects.all()
+
+	cereal_dict = {}
+	cereal_list = []
+
+	for cereal in cereal_search:
+		cereal_list.append(cereal.name)
+
+	print cereal_list
+	print search_string
+
+	return JsonResponse(cereal_list, safe=False)
+
+def ajax_search(request):
+	
+	context = {}
+	
+	return render_to_response('ajax_search.html', context, context_instance=RequestContext(request))
 
 def cereal_list_template2(request):
 
